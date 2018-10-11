@@ -9,17 +9,33 @@
 import UIKit
 
 class ViewController: UIViewController {
-
+    
+    @IBOutlet weak var messageLabel: UILabel!
+    
+    @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view, typically from a nib.
+        
+        messageLabel.text = ""
     }
-
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
+    
+    @IBAction func startTestButtonPress(_ sender: UIButton) {
+        
+        messageLabel.text = "Starting test"
+        
+        activityIndicator.startAnimating()
+        
+        DispatchQueue.global(qos: .userInitiated).async { [weak self] in
+            
+            Thread.sleep(until: Date(timeIntervalSinceNow: 2.0))
+            
+            DispatchQueue.main.async {
+                
+                self?.activityIndicator.stopAnimating()
+                
+                self?.messageLabel.text = "Test completed"
+            }
+        }
     }
-
-
 }
-
